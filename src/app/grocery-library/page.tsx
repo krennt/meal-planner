@@ -129,7 +129,7 @@ export default function GroceryLibraryPage() {
           <div className="flex space-x-4">
             <Link
               href="/grocery-list"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+              className="bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 transition-colors"
             >
               Go to Grocery List
             </Link>
@@ -264,10 +264,10 @@ export default function GroceryLibraryPage() {
                             </div>
                             <div className="flex justify-between items-center">
                               <button
-                                onClick={() => addItemToList(item)}
-                                className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200 transition-colors"
+                              onClick={() => addItemToList(item)}
+                              className="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded hover:bg-primary-200 transition-colors"
                               >
-                                Add to List
+                              Add to List
                               </button>
                               <div className="flex space-x-1">
                                 <button 

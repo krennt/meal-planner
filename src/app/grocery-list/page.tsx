@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Ingredient } from '@/lib/data/meals';
 import QuantityControl from '@/components/grocery/QuantityControl';
+import NavLayout from '@/components/navigation/NavLayout';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import {
   loadGroceryList,
   saveGroceryList,
@@ -34,10 +36,8 @@ export default function GroceryListPage() {
   
   // Delete an item from grocery list
   const deleteItem = (id: string) => {
-    if (window.confirm('Are you sure you want to remove this item from your grocery list?')) {
-      removeFromGroceryList(id);
-      setGroceryList(loadGroceryList());
-    }
+    removeFromGroceryList(id);
+    setGroceryList(loadGroceryList());
   };
 
   // Create a new item and add to both library and list
@@ -72,26 +72,8 @@ export default function GroceryListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-primary-600 shadow-md relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div></div>
-            <div className="flex items-center space-x-6">
-              <div className="hidden md:flex items-center space-x-4">
-                <span className="text-white">{user?.email}</span>
-                <button 
-                  onClick={() => router.push('/meal-plan')} 
-                  className="text-white px-4 py-2 rounded bg-primary-700 hover:bg-primary-800 transition-colors"
-                >
-                  Meal Plan
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+    <ProtectedRoute>
+      <NavLayout>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -99,7 +81,7 @@ export default function GroceryListPage() {
           <h2 className="text-3xl font-bold text-gray-900">Grocery List</h2>
           <button
             onClick={() => router.push('/meal-plan')}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center"
+            className="bg-primary-600 text-white px-4 py-2 rounded hover:bg-primary-700 transition-colors flex items-center"
           >
             Back to Meal Plan
           </button>
@@ -125,7 +107,7 @@ export default function GroceryListPage() {
                       <div className="font-medium text-gray-900">
                         {item.name}
                         {itemCount > 1 && (
-                          <span className="ml-2 text-sm bg-blue-100 text-blue-800 py-0.5 px-2 rounded">
+                          <span className="ml-2 text-sm bg-primary-100 text-primary-800 py-0.5 px-2 rounded">
                             x{itemCount}
                           </span>
                         )}
@@ -310,6 +292,7 @@ export default function GroceryListPage() {
           </form>
         </div>
       </main>
-    </div>
+      </NavLayout>
+    </ProtectedRoute>
   );
 }

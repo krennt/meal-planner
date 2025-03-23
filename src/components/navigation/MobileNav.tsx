@@ -6,14 +6,13 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/contexts/AuthContext';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard' },
   { name: 'Meal Plan', href: '/meal-plan' },
   { name: 'Grocery List', href: '/grocery-list' },
   { name: 'Grocery Library', href: '/grocery-library' },
   { name: 'Meals', href: '/meals' },
 ];
 
-export default function MobileNav({ currentPath = '/dashboard' }) {
+export default function MobileNav({ currentPath = '/meal-plan' }) {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
 

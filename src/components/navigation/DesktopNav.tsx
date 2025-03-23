@@ -3,14 +3,13 @@
 import Link from 'next/link';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard' },
   { name: 'Meal Plan', href: '/meal-plan' },
   { name: 'Grocery List', href: '/grocery-list' },
   { name: 'Grocery Library', href: '/grocery-library' },
   { name: 'Meals', href: '/meals' },
 ];
 
-export default function DesktopNav({ currentPath = '/dashboard' }) {
+export default function DesktopNav({ currentPath = '/meal-plan' }) {
   return (
     <nav className="hidden md:flex space-x-8">
       {navigation.map((item) => (
