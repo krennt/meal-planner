@@ -14,7 +14,7 @@ export type MealPlanState = {
 
 // Functions to convert between MealPlanEntry[] and MealPlanState
 export const convertToMealPlanState = (entries: MealPlanEntry[]): MealPlanState => {
-  return entries.reduce((acc, entry) => {
+  return entries.reduce((acc: MealPlanState, entry: MealPlanEntry) => {
     if (!acc[entry.day]) {
       acc[entry.day] = {};
     }
@@ -26,8 +26,8 @@ export const convertToMealPlanState = (entries: MealPlanEntry[]): MealPlanState 
 export const convertToMealPlanEntries = (state: MealPlanState): MealPlanEntry[] => {
   const entries: MealPlanEntry[] = [];
   
-  Object.keys(state).forEach(day => {
-    Object.keys(state[day]).forEach(mealType => {
+  Object.keys(state).forEach((day: string) => {
+    Object.keys(state[day]).forEach((mealType: string) => {
       entries.push({
         day,
         mealType,
@@ -44,13 +44,13 @@ export const generateGroceryList = (mealPlanState: MealPlanState): Ingredient[] 
   const ingredientMap = new Map<string, Ingredient>();
   
   // Collect all ingredients from the meal plan
-  Object.keys(mealPlanState).forEach(day => {
-    Object.keys(mealPlanState[day]).forEach(mealType => {
+  Object.keys(mealPlanState).forEach((day: string) => {
+    Object.keys(mealPlanState[day]).forEach((mealType: string) => {
       const mealId = mealPlanState[day][mealType];
       if (mealId) {
         const meal = getMealById(mealId);
         if (meal) {
-          meal.ingredients.forEach(ingredient => {
+          meal.ingredients.forEach((ingredient: Ingredient) => {
             // Use ingredient name as the key to avoid duplicates
             if (!ingredientMap.has(ingredient.name)) {
               // If it's the first occurrence, add with count 1

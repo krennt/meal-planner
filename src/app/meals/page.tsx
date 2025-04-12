@@ -8,7 +8,7 @@ import { Meal, Ingredient, getAllMeals } from '@/lib/data/meals';
 import { createMeal, updateMeal, deleteMeal } from '@/lib/data/mealService';
 import NavLayout from '@/components/navigation/NavLayout';
 
-export default function MealsPage() {
+export default function MealsPage(): React.ReactNode {
   const { user, logout } = useAuth();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
@@ -52,7 +52,7 @@ export default function MealsPage() {
   });
 
   // Get unique cuisine types for filter
-  const cuisineTypes = ['All', ...new Set(meals.map(meal => meal.cuisine))];
+  const cuisineTypes = ['All', ...Array.from(new Set(meals.map(meal => meal.cuisine)))];
 
   // Handle selecting a meal for view/edit
   const handleSelectMeal = (meal: Meal) => {
@@ -133,9 +133,9 @@ export default function MealsPage() {
 
   // Handle save (create or update)
   const handleSaveMeal = async () => {
-    // Validate form data
-    if (!formData.name || !formData.description || !formData.cuisine || !formData.ingredients?.length) {
-      alert('Please fill in all required fields and add at least one ingredient');
+    // Validate form data - only meal name is required
+    if (!formData.name) {
+      alert('Please enter a meal name');
       return;
     }
 
@@ -356,7 +356,7 @@ export default function MealsPage() {
                       
                       <div>
                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                          Description*
+                          Description
                         </label>
                         <textarea
                           id="description"
@@ -366,13 +366,12 @@ export default function MealsPage() {
                           rows={3}
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                           placeholder="Enter meal description"
-                          required
                         />
                       </div>
                       
                       <div>
                         <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-1">
-                          Cuisine*
+                          Cuisine
                         </label>
                         <input
                           type="text"
@@ -382,7 +381,6 @@ export default function MealsPage() {
                           onChange={handleInputChange}
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                           placeholder="Enter cuisine type"
-                          required
                         />
                       </div>
                       
@@ -404,7 +402,7 @@ export default function MealsPage() {
                       {/* Ingredients */}
                       <div>
                         <div className="flex justify-between items-center mb-4">
-                          <h4 className="text-md font-medium text-gray-900">Ingredients*</h4>
+                          <h4 className="text-md font-medium text-gray-900">Ingredients</h4>
                         </div>
                         
                         {/* Ingredients List */}

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import LoginForm from '@/components/auth/LoginForm';
+import React from 'react';
 
-export default function LoginPage() {
+export default function LoginPage(): React.ReactNode {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

@@ -53,7 +53,7 @@ export const loadGroceryList = (): GroceryItem[] => {
     const stored = localStorage.getItem(STORAGE_KEYS.GROCERY_LIST);
     // Ensure each item has a default count of at least 1
     const groceryList = stored ? JSON.parse(stored) : [];
-    return groceryList.map(item => ({
+    return groceryList.map((item: GroceryItem) => ({
       ...item,
       count: item.count || 1
     }));
@@ -64,12 +64,12 @@ export const loadGroceryList = (): GroceryItem[] => {
 };
 
 // Add an item to the grocery list
-export const addToGroceryList = (item: Ingredient): void => {
+export const addToGroceryList = (item: Ingredient): GroceryItem[] => {
   try {
     const currentList = loadGroceryList();
     
     // Check if the item already exists in the list
-    const existingItemIndex = currentList.findIndex(i => i.id === item.id);
+    const existingItemIndex = currentList.findIndex((i: GroceryItem) => i.id === item.id);
     
     if (existingItemIndex >= 0) {
       // If the item exists, increment its count
@@ -81,8 +81,12 @@ export const addToGroceryList = (item: Ingredient): void => {
     }
     
     saveGroceryList(currentList);
+    
+    // Return feedback to caller
+    return currentList;
   } catch (error) {
     console.error('Failed to add item to grocery list:', error);
+    return [];
   }
 };
 
@@ -90,7 +94,7 @@ export const addToGroceryList = (item: Ingredient): void => {
 export const removeFromGroceryList = (itemId: string): void => {
   try {
     let currentList = loadGroceryList();
-    currentList = currentList.filter(item => item.id !== itemId);
+    currentList = currentList.filter((item: GroceryItem) => item.id !== itemId);
     saveGroceryList(currentList);
   } catch (error) {
     console.error('Failed to remove item from grocery list:', error);
@@ -124,7 +128,7 @@ export const updateGroceryItem = (item: Ingredient): void => {
   try {
     // Update in library
     const currentLibrary = loadGroceryLibrary();
-    const libraryIndex = currentLibrary.findIndex(i => i.id === item.id);
+    const libraryIndex = currentLibrary.findIndex((i: Ingredient) => i.id === item.id);
     
     if (libraryIndex >= 0) {
       currentLibrary[libraryIndex] = { ...item };
@@ -133,7 +137,7 @@ export const updateGroceryItem = (item: Ingredient): void => {
     
     // Update in list if it exists there
     const currentList = loadGroceryList();
-    const listIndex = currentList.findIndex(i => i.id === item.id);
+    const listIndex = currentList.findIndex((i: GroceryItem) => i.id === item.id);
     
     if (listIndex >= 0) {
       // Preserve the count
@@ -150,7 +154,7 @@ export const updateGroceryItem = (item: Ingredient): void => {
 export const removeFromGroceryLibrary = (itemId: string): void => {
   try {
     let currentLibrary = loadGroceryLibrary();
-    currentLibrary = currentLibrary.filter(item => item.id !== itemId);
+    currentLibrary = currentLibrary.filter((item: Ingredient) => item.id !== itemId);
     saveGroceryLibrary(currentLibrary);
     
     // Also remove from list if it exists there
@@ -164,7 +168,7 @@ export const removeFromGroceryLibrary = (itemId: string): void => {
 export const markItemInCart = (itemId: string, inCart: boolean): void => {
   try {
     const currentList = loadGroceryList();
-    const itemIndex = currentList.findIndex(item => item.id === itemId);
+    const itemIndex = currentList.findIndex((item: GroceryItem) => item.id === itemId);
     
     if (itemIndex >= 0) {
       currentList[itemIndex] = {
@@ -183,7 +187,7 @@ export const markItemInCart = (itemId: string, inCart: boolean): void => {
 export const clearItemsInCart = (): void => {
   try {
     let currentList = loadGroceryList();
-    currentList = currentList.filter(item => !item.isInCart);
+    currentList = currentList.filter((item: GroceryItem) => !item.isInCart);
     saveGroceryList(currentList);
   } catch (error) {
     console.error('Failed to clear items in cart:', error);
@@ -194,7 +198,7 @@ export const clearItemsInCart = (): void => {
 export const updateItemQuantity = (itemId: string, newCount: number): void => {
   try {
     const currentList = loadGroceryList();
-    const itemIndex = currentList.findIndex(item => item.id === itemId);
+    const itemIndex = currentList.findIndex((item: GroceryItem) => item.id === itemId);
     
     if (itemIndex >= 0) {
       // Ensure count is at least 1
@@ -219,8 +223,8 @@ export const generateGroceryListFromMeals = (ingredients: Ingredient[]): void =>
     let currentList = loadGroceryList();
     
     // Add new ingredients
-    ingredients.forEach(ingredient => {
-      const existingItemIndex = currentList.findIndex(item => item.id === ingredient.id);
+    ingredients.forEach((ingredient: Ingredient) => {
+      const existingItemIndex = currentList.findIndex((item: GroceryItem) => item.id === ingredient.id);
       
       if (existingItemIndex >= 0) {
         // Update count

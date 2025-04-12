@@ -12,7 +12,12 @@ export default function Dashboard() {
   // Mock data for the dashboard
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   
-  const mealPlan = {
+  // Define a type for meal plan with index signature
+  type MealPlanType = {
+    [key: string]: { dinner: string };
+  };
+  
+  const mealPlan: MealPlanType = {
     Monday: { dinner: 'Spaghetti Bolognese' },
     Tuesday: { dinner: 'Grilled Salmon' },
     Wednesday: { dinner: 'Stir Fry Vegetables' },

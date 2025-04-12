@@ -1,5 +1,5 @@
 import { MealPlanState } from './mealPlanService';
-import { loadGroceryList as loadList, saveGroceryList as saveList } from './grocery/groceryService';
+import { loadGroceryList as loadList, saveGroceryList as saveList, GroceryItem } from './grocery/groceryService';
 
 // Storage keys
 const STORAGE_KEYS = {
@@ -27,12 +27,12 @@ export const loadMealPlan = (): MealPlanState | null => {
 };
 
 // Save grocery list to localStorage (using new service)
-export const saveGroceryList = (groceryList: any[]): void => {
+export const saveGroceryList = (groceryList: GroceryItem[]): void => {
   saveList(groceryList);
 };
 
 // Load grocery list from localStorage (using new service)
-export const loadGroceryList = (): any[] => {
+export const loadGroceryList = (): GroceryItem[] => {
   return loadList();
 };
 

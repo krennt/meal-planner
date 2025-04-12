@@ -10,19 +10,25 @@ import {
   saveGroceryLibrary,
   addToGroceryLibrary,
   removeFromGroceryLibrary,
-  addToGroceryList
+  addToGroceryList,
+  loadGroceryList,
+  GroceryItem
 } from '@/lib/data/grocery/groceryService';
 import NavLayout from '@/components/navigation/NavLayout';
 
-export default function GroceryLibraryPage() {
+export default function GroceryLibraryPage(): React.ReactNode {
   const { user, logout } = useAuth();
   
   // Library state
   const [groceryLibrary, setGroceryLibrary] = useState<Ingredient[]>([]);
   
-  // Load grocery library on initial load
+  // State for grocery list to check if items are already in list
+  const [groceryList, setGroceryList] = useState<GroceryItem[]>([]);
+  
+  // Load grocery library and list on initial load
   useEffect(() => {
     setGroceryLibrary(loadGroceryLibrary());
+    setGroceryList(loadGroceryList());
   }, []);
   
   // Category filtering
@@ -98,11 +104,30 @@ export default function GroceryLibraryPage() {
     }
   };
 
+  // State for tracking added items to provide visual feedback
+  const [addedItems, setAddedItems] = useState<{[key: string]: boolean}>({});
+  const [showFeedback, setShowFeedback] = useState<boolean>(false);
+  const [lastAddedItem, setLastAddedItem] = useState<string>("");
+
   // Add item from library to grocery list
   const addItemToList = (item: Ingredient) => {
     // Add to grocery list
-    addToGroceryList(item);
-    alert(`Added ${item.name} to your grocery list`);
+    const updatedList = addToGroceryList(item);
+    
+    // Update grocery list state
+    setGroceryList(updatedList);
+    
+    // Track added items for visual feedback
+    setAddedItems({...addedItems, [item.id]: true});
+    setLastAddedItem(item.name);
+    
+    // Show feedback
+    setShowFeedback(true);
+    
+    // Clear feedback after 2 seconds
+    setTimeout(() => {
+      setShowFeedback(false);
+    }, 2000);
   };
   
   // Filter library items based on category and search query
@@ -122,6 +147,23 @@ export default function GroceryLibraryPage() {
   return (
     <ProtectedRoute>
       <NavLayout>
+        {/* Feedback Toast Notification */}
+        {showFeedback && (
+          <div className="fixed top-4 right-4 z-50 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md">
+            <div className="flex items-center">
+              <div className="py-1">
+                <svg className="h-6 w-6 text-green-500 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold">Added to Grocery List</p>
+                <p className="text-sm">{lastAddedItem} was added to your grocery list.</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
@@ -265,9 +307,16 @@ export default function GroceryLibraryPage() {
                             <div className="flex justify-between items-center">
                               <button
                               onClick={() => addItemToList(item)}
-                              className="text-xs bg-primary-100 text-primary-800 px-2 py-1 rounded hover:bg-primary-200 transition-colors"
+                              className={`text-xs px-2 py-1 rounded transition-colors flex items-center ${groceryList.some(listItem => listItem.id === item.id) ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-primary-100 text-primary-800 hover:bg-primary-200'}`}
                               >
-                              Add to List
+                              {groceryList.some(listItem => listItem.id === item.id) ? (
+                                <>
+                                <svg className="h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                In List
+                                </>
+                              ) : 'Add to List'}
                               </button>
                               <div className="flex space-x-1">
                                 <button 

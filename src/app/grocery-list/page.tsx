@@ -17,7 +17,7 @@ import {
   GroceryItem
 } from '@/lib/data/grocery/groceryService';
 
-export default function GroceryListPage() {
+export default function GroceryListPage(): React.ReactNode {
   const { user, loading } = useAuth();
   const router = useRouter();
   

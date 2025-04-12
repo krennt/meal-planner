@@ -10,7 +10,7 @@ import { generateGroceryList, MealPlanState } from '@/lib/data/mealPlanService';
 import { saveMealPlan, loadMealPlan, saveGroceryList } from '@/lib/data/storageService';
 import NavLayout from '@/components/navigation/NavLayout';
 
-export default function MealPlanPage() {
+export default function MealPlanPage(): React.ReactNode {
   const { user, logout } = useAuth();
   const [isDemoMode] = useState(false);
   const [currentWeek, setCurrentWeek] = useState(new Date());
@@ -59,7 +59,7 @@ export default function MealPlanPage() {
   const mealTypes = ['dinner'];
 
   // Format date for display
-  const formatWeekRange = (date) => {
+  const formatWeekRange = (date: Date): string => {
     const startOfWeek = new Date(date);
     const endOfWeek = new Date(date);
     startOfWeek.setDate(date.getDate() - date.getDay() + 1);
@@ -90,7 +90,7 @@ export default function MealPlanPage() {
   };
 
   // Update meal in the state
-  const updateMeal = (day, mealType, mealId) => {
+  const updateMeal = (day: string, mealType: string, mealId: string) => {
     setMealData(prev => ({
       ...prev,
       [day]: {

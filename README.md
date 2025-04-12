@@ -24,6 +24,26 @@ A modern web-based application for AI-assisted meal planning, grocery list manag
 - Node.js 18+ and npm/yarn
 - Firebase account (for authentication and database)
 
+### TypeScript Configuration
+
+This project uses TypeScript with strict type checking. The `tsconfig.json` has the following important configurations:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": false,
+    "noImplicitAny": true,
+    // other options...
+  }
+}
+```
+
+Important TypeScript guidelines to follow:
+- Always add explicit return types to React components: `function MyComponent(): React.ReactNode`
+- Add explicit type annotations to callback parameters in array methods: `.map((item: ItemType) => ...)`
+- Avoid using `any` types in your code
+
 ### Installation
 
 1. Clone the repository:
@@ -75,6 +95,36 @@ For development and testing purposes, you can access the application without set
 This allows you to explore the UI and functionality without requiring authentication.
 
 ## Deployment
+
+### Build Process
+
+Before deploying, it's important to test the production build locally to catch any TypeScript errors:
+
+```bash
+npm run build
+```
+
+Common build issues and solutions:
+
+1. **TypeScript errors**: Ensure all components have proper return types (React.ReactNode) and callback parameters have explicit type annotations
+2. **Missing null checks**: Use optional chaining (`?.`) for properties that might be undefined
+3. **Build vs Dev differences**: Some errors only appear in production build due to stricter type checking
+
+### Deploy to Firebase Hosting
+
+The project is set up for Firebase Hosting deployment:
+
+1. Ensure you're logged in to Firebase:
+   ```bash
+   firebase login
+   ```
+
+2. Run the deploy script:
+   ```bash
+   npm run deploy
+   ```
+
+This script will build the application and deploy it to Firebase Hosting.
 
 ### Deploy to Vercel
 
