@@ -55,8 +55,8 @@ export default function SignupForm() {
           }
         });
         
-        // Redirect to onboarding or dashboard
-        router.push('/dashboard');
+        // Redirect to grocery list
+        router.push('/grocery-list');
       }
     } catch (err: any) {
       console.error('Signup error:', err);

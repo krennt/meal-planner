@@ -26,7 +26,7 @@ export default function LoginForm() {
       setLoading(true);
       setError('');
       await login(email, password);
-      router.push('/dashboard');
+      router.push('/grocery-list');
     } catch (err: any) {
       console.error('Login error:', err);
       setError(err.message || 'Failed to sign in. Please check your credentials.');
