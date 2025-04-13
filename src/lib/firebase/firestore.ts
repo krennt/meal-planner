@@ -155,7 +155,22 @@ export const queryDocuments = async (
  * Get all documents from a collection
  */
 export const getAllDocuments = async (collectionName: string) => {
-  return queryDocuments(collectionName);
+  try {
+    console.log(`Getting all documents from collection: ${collectionName}`);
+    const collectionRef = collection(db, collectionName);
+    const querySnapshot = await getDocs(collectionRef);
+    
+    const documents: DocumentData[] = [];
+    querySnapshot.forEach((doc) => {
+      documents.push({ id: doc.id, ...doc.data() });
+    });
+    
+    console.log(`Found ${documents.length} documents in collection ${collectionName}`);
+    return documents;
+  } catch (error) {
+    console.error(`Error getting all documents from ${collectionName}:`, error);
+    throw error;
+  }
 };
 
 /**
